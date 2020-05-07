@@ -5,7 +5,7 @@ app = Flask(__name__)             # create an app instance
 
 
 @app.route("/")                   # at the end point /
-def hello():                      # call method hello
+def index():                      # call method hello
     return "Hello World!"         # which returns "hello world"
 
 
