@@ -9,6 +9,6 @@ def index():                      # call method hello
     return "Hello World!"         # which returns "hello world"
 
 
-if __name__ == "__main__":        # on running python app.py
+if __name__ == "__main__":        # on running python App.py
     # Schema()
     app.run(debug=True)           # run the flask app
