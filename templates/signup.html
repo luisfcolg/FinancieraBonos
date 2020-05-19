@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Python Flask FinancieraBonos App</title>
+
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <!-- Latest compiled JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+        <link href="../static/signup.css" rel="stylesheet">
+
+    </head>
+
+    <body>
+
+        <div class="container">
+            <div class="header">
+                <nav>
+                    <ul class="nav nav-pills pull-right">
+                        <li role="presentation" ><a href="main">Home</a></li>
+                        <li role="presentation"><a href="#">Sign In</a></li>
+                        <li role="presentation" class="active"><a href="#">Sign Up</a></li>
+                    </ul>
+                </nav>
+                <h3 class="text-muted">Bienvenido</h3>
+            </div>
+
+            <div class="jumbotron">
+                <h1>FinancieraBonos App</h1>
+                <form class="form-signin">
+                    <label for="inputUsername" class="sr-only">Username</label>
+                    <input type="username" name="inputUsername" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
+                    <label for="inputPassword" class="sr-only">Password</label>
+                    <input type="password" name="inputPassword" id="inputPassword" class="form-control" placeholder="Password" required>
+
+                    <div class="custom-control custom-radio">
+                        <input type="radio" class="custom-control-input" id="financial" value="1" name="userType" checked="checked">
+                        <label class="custom-control-label" for="financial">Financiero</label>
+                    </div>
+                    <div class="custom-control custom-radio">
+                        <input type="radio" class="custom-control-input" id="financialAdmin" value="2" name="userType">
+                        <label class="custom-control-label" for="financialAdmin">Financiero administrador</label>
+                    </div>
+
+                    <button id="btnSignUp" class="btn btn-lg btn-primary btn-block" type="button">Sign up</button>
+                </form>
+            </div>
+
+            <footer class="footer">
+                <p>&copy; FinancieraBonos 2020</p>
+            </footer>
+
+            <script type="text/javascript">
+
+                $(function() {
+                    $('#btnSignUp').click(function() {
+                        $.ajax({
+                            url: '/signUp',
+                            data: $('form').serialize(),
+                            type: 'POST',
+                            success: function(response) {
+                                console.log(response);
+                            },
+                            error: function(error) {
+                                console.log(error);
+                            }
+                        });
+                    });
+                });
+
+            </script>
+
+        </div>
+    </body>
+</html>
