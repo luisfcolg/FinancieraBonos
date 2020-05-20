@@ -1,7 +1,7 @@
-class Bono:
-    def __init__(self, id, usuario, flavor, tickerSymbol, ticker, currency, issueDate, originalIssueDate, firstCouponDate, coupon, maturityDate, auctionDate, isin, totalIssueSize ):
+class Bond:
+    def __init__(self, id, user, flavor, tickerSymbol, ticker, currency, issueDate, originalIssueDate, firstCouponDate, coupon, maturityDate, auctionDate, isin, totalIssueSize):
         self.id = id
-        self.usuario = usuario
+        self.user = user
         self.flavor = flavor
         self.tickerSymbol = tickerSymbol
         self.ticker = ticker
