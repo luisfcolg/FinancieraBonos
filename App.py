@@ -1,12 +1,10 @@
-from flask import Flask, render_template, json, request
+from flask import Flask, render_template, json, request, redirect, session
 from flaskext.mysql import MySQL
 from werkzeug.security import generate_password_hash, check_password_hash
-from datetime import datetime
 
 
 app = Flask(__name__)             # create an app instance
-
-
+app.secret_key = '1234'
 mysql = MySQL()
 
 # MySQL configurations
@@ -17,10 +15,9 @@ app.config["MYSQL_DATABASE_HOST"] = "localhost"
 mysql.init_app(app)
 
 
-@app.route("/")                   # at the end point /
-def index():                      # call method hello
-    time = datetime.now()
-    return "Hi, the current time is " + str(time.hour) + ":" + str(time.minute) + "!"        # which returns "hello world"
+@app.route("/")
+def index():
+    return render_template("index.html")
 
 
 @app.route("/showSignUp")
@@ -59,6 +56,54 @@ def signUp():
     finally:
         cursor.close()
         conn.close()
+
+
+@app.route('/showSignin')
+def showSignin():
+    return render_template('signin.html')
+
+
+@app.route('/validateLogin', methods=['POST'])
+def validateLogin():
+    try:
+        _username = request.form['inputUsername']
+        _password = request.form['inputPassword']
+
+        # connect to mysql
+ 
+        con = mysql.connect()
+        cursor = con.cursor()
+        cursor.callproc("validate_user", (_username,))
+        data = cursor.fetchall()
+
+        if len(data) > 0:
+            if check_password_hash(str(data[0][3]), _password):
+                session['user'] = data[0][0]
+                return redirect('/userHome')
+            else:
+                return render_template('error.html', error='Wrong Username or Password.')
+        else:
+            return render_template('error.html', error='Wrong Username or Password.')
+ 
+    except Exception as e:
+        return render_template('error.html', error=str(e))
+    finally:
+        cursor.close()
+        con.close()
+
+
+@app.route('/userHome')
+def userHome():
+    if session.get('user'):
+        return render_template('userHome.html')
+    else:
+        return render_template('error.html', error='Unauthorized Access')
+
+
+@app.route('/logout')
+def logout():
+    session.pop('user', None)
+    return redirect('/')
 
 
 if __name__ == "__main__":        # on running python App.py
