@@ -1,6 +1,7 @@
 from flask import Flask, render_template, json, request, redirect, session
 from flaskext.mysql import MySQL
 from werkzeug.security import generate_password_hash, check_password_hash
+from models import User
 
 
 app = Flask(__name__)             # create an app instance
@@ -79,6 +80,7 @@ def validateLogin():
         if len(data) > 0:
             if check_password_hash(str(data[0][3]), _password):
                 session['user'] = data[0][0]
+                session['role'] = data[0][1]
                 return redirect('/userHome')
             else:
                 return render_template('error.html', error='Wrong Username or Password.')
@@ -95,7 +97,10 @@ def validateLogin():
 @app.route('/userHome')
 def userHome():
     if session.get('user'):
-        return render_template('userHome.html')
+        if session.get('role') == 1:
+            return render_template('userHome.html')
+        else:
+            return render_template('userHomeAdmin.html')
     else:
         return render_template('error.html', error='Unauthorized Access')
 
@@ -103,6 +108,7 @@ def userHome():
 @app.route('/logout')
 def logout():
     session.pop('user', None)
+    session.pop('role', None)
     return redirect('/')
 
 
