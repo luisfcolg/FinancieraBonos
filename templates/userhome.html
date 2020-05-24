@@ -25,10 +25,56 @@
         </div>
  
         <div class="jumbotron">
-            <h1>Bienvenido!!</h1>
- 
+            <h1>Bienvenido!</h1>
         </div>
- 
+
+        <div class="row">
+            <div class="col-md-7">
+              <table class="table table-striped table-hover table-bordered table-sm bg-white">
+                <thead>
+                  <tr>
+                    <td>ID</td>
+                    <td>ID user</td>
+                    <td>Flavor</td>
+                    <td>Ticker symbol</td>
+                    <td>Ticker</td>
+                      <td>Currency</td>
+                      <td>Issue date</td>
+                      <td>Original issue date</td>
+                      <td>First coupon date</td>
+                      <td>Coupon</td>
+                      <td>Maturity date</td>
+                      <td>Auction date</td>
+                      <td>ISIN</td>
+                      <td>Total issue size</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for bond in bonds %}
+                  <tr>
+                    <td>{{bond.0}}</td>
+                    <td>{{bond.1}}</td>
+                    <td>{{bond.2}}</td>
+                    <td>{{bond.3}}</td>
+                      <td>{{bond.4}}</td>
+                      <td>{{bond.5}}</td>
+                      <td>{{bond.6}}</td>
+                      <td>{{bond.7}}</td>
+                      <td>{{bond.8}}</td>
+                      <td>{{bond.9}}</td>
+                      <td>{{bond.10}}</td>
+                      <td>{{bond.11}}</td>
+                      <td>{{bond.12}}</td>
+                      <td>{{bond.13}}</td>
+                    <td>
+                      <a href="/edit/{{bond.0}}" class="btn btn-secondary">Edit</a>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+        </div>
  
         <footer class="footer">
             <p>&copy; FinacieraBonos 2020</p>
