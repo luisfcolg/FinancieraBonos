@@ -1,7 +1,6 @@
 from flask import Flask, render_template, json, request, redirect, session
 from flaskext.mysql import MySQL
 from werkzeug.security import generate_password_hash, check_password_hash
-from models import User
 
 
 app = Flask(__name__)             # create an app instance
@@ -96,9 +95,16 @@ def validateLogin():
 
 @app.route('/userHome')
 def userHome():
+    con = mysql.connect()
+    cursor = con.cursor()
+    cursor.execute("SELECT * FROM bonds")
+    data = cursor.fetchall()
+    cursor.close()
+
     if session.get('user'):
+        con.close()
         if session.get('role') == 1:
-            return render_template('userHome.html')
+            return render_template('userHome.html', bonds=data)
         else:
             return render_template('userHomeAdmin.html')
     else:
