@@ -1,4 +1,4 @@
-from flask import Flask, render_template, json, request, redirect, session
+from flask import Flask, render_template, json, request, redirect, session, flash, url_for
 from flaskext.mysql import MySQL
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -104,9 +104,9 @@ def userHome():
     if session.get('user'):
         con.close()
         if session.get('role') == 1:
-            return render_template('userHome.html', bonds=data)
+            return render_template('userhome.html', bonds=data)
         else:
-            return render_template('userHomeAdmin.html')
+            return render_template('userhomeadmin.html', bonds=data)
     else:
         return render_template('error.html', error='Unauthorized Access')
 

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
- 
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,9 +19,9 @@
       }
     </style>
 </head>
- 
+
 <body>
- 
+
     <div class="container">
         <div class="header">
             <nav>
@@ -32,7 +32,7 @@
             </nav>
             <h3 class="text-muted">Bienvenido</h3>
         </div>
- 
+
         <div class="jumbotron">
             <h1>Bienvenido!</h1>
         </div>
@@ -154,18 +154,21 @@
                       <td>{{bond.11}}</td>
                       <td>{{bond.12}}</td>
                       <td>{{bond.13}}</td>
+                    <td>
+                      <a href="/showEditBond/{{bond.0}}" class="btn btn-secondary">Edit</a>
+                    </td>
                   </tr>
                   {% endfor %}
                 </tbody>
               </table>
             </div>
         </div>
- 
+
         <footer class="footer">
             <p>&copy; FinacieraBonos 2020</p>
         </footer>
- 
+
     </div>
 </body>
- 
+
 </html>
