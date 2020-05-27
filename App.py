@@ -112,6 +112,7 @@ def validateLogin():
  
     except Exception as e:
         message = "Ocurrio un error al iniciar sesion - {}\n{}".format(e,traceback.format_exc())
+        logging.error(message)
         return render_template('error.html', error=str(e))
     finally:
         cursor.close()
@@ -142,6 +143,7 @@ def userHome():
             return render_template('error.html', error='Acceso denegado')
     except Exception as e:
         message = "Ocurrio un error al cargar informacion - {}\n{}".format(e,traceback.format_exc())
+        logging.error(message)
         return render_template('error.html', error=str(e))
     finally:
         cursor.close()
@@ -193,6 +195,7 @@ def addBond():
         return redirect(url_for('userHome'))
     except Exception as e:
         message = "Ocurrio un error al anadir bono - {}\n{}".format(e,traceback.format_exc())
+        logging.error(message)
         return render_template('error.html', error=str(e))
     finally:
         cursor.close()
@@ -233,6 +236,7 @@ def editBond(id):
         return redirect(url_for('userHome'))
     except Exception as e:
         message = "Ocurrio un error al actualizar bono - {}\n{}".format(e,traceback.format_exc())
+        logging.error(message)
         return render_template('error.html', error=str(e))
     finally:
         cursor.close()
@@ -242,7 +246,7 @@ def editBond(id):
 
 @app.route("/showEditBond/<id>", methods=["POST", "GET"])
 def getBond(id):
-     '''
+    '''
     Esta funcion sera usada para mostrar la pantalla de editar bono
     :param id: El id del bono a editar 
     :type id: int  
@@ -258,6 +262,7 @@ def getBond(id):
         return render_template("editbond.html", bond=data[0])
     except Exception as e:
         message = "Ocurrio un error al cargar informacion del bono - {}\n{}".format(e,traceback.format_exc())
+        logging.error(message)
         return render_template('error.html', error=str(e))
     finally:
         cursor.close()
