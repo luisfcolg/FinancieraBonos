@@ -31,6 +31,11 @@ def showSignUp():
 
 @app.route("/signUp", methods=["POST"])
 def signUp():
+    '''
+     Esta funcion sera usada para crear un usuario 
+    :returns: Una descripcion breve del resultado de la creacion
+    :rtype: str 
+    '''
     try:
         # Read values from the UI
         _username = request.form["inputUsername"]
@@ -76,6 +81,11 @@ def showSignin():
 
 @app.route('/validateLogin', methods=['POST'])
 def validateLogin():
+    '''
+    Esta funcion sera usada para validar un usuario 
+    :returns: Devuelve un template html con el resultado 
+    :rtype: html template
+    '''
     try:
         _username = request.form['inputUsername']
         _password = request.form['inputPassword']
@@ -111,6 +121,11 @@ def validateLogin():
 
 @app.route('/userHome')
 def userHome():
+    '''
+    Esta funcion sera usada para mostrar la pantalla de inicio dependiendo del rol del usuario 
+    :returns: Devuelve un template html con el resultado 
+    :rtype: html template
+    '''
     try:
         con = mysql.connect()
         cursor = con.cursor()
@@ -136,6 +151,11 @@ def userHome():
 
 @app.route('/logout')
 def logout():
+    '''
+    Esta funcion sera usada para cerrar sesion y mostrar la pantalla inicial
+    :returns: Devuelve un template html con el resultado 
+    :rtype: html template
+    '''
     session.pop('user', None)
     session.pop('role', None)
     logging.info("Sesion finalizada")
@@ -144,6 +164,11 @@ def logout():
 
 @app.route("/addBond", methods=["POST"])
 def addBond():
+    '''
+    Esta funcion sera usada para anadir bono
+    :returns: Devuelve un template html con el resultado 
+    :rtype: html template
+    '''
     try:
         _idUser = session.get("user")
         _flavor = request.form["flavor"]
@@ -177,6 +202,13 @@ def addBond():
 
 @app.route("/editBond/<id>", methods=["POST"])
 def editBond(id):
+    '''
+    Esta funcion sera usada para editar bono
+    :param id: El id del bono a editar 
+    :type id: int  
+    :returns: Devuelve un template html con el resultado 
+    :rtype: html template
+    '''
     try:
         _idUser = session.get("user")
         _flavor = request.form["flavor"]
@@ -210,6 +242,13 @@ def editBond(id):
 
 @app.route("/showEditBond/<id>", methods=["POST", "GET"])
 def getBond(id):
+     '''
+    Esta funcion sera usada para mostrar la pantalla de editar bono
+    :param id: El id del bono a editar 
+    :type id: int  
+    :returns: Devuelve un template html con el resultado 
+    :rtype: html template
+    '''
     try:
         con = mysql.connect()
         cursor = con.cursor()
