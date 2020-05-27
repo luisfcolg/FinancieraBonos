@@ -118,6 +118,71 @@ def logout():
     return redirect('/')
 
 
+@app.route("/addBond", methods=["POST"])
+def addBond():
+
+    _idUser = session.get("user")
+    _flavor = request.form["flavor"]
+    _tickerSymbol = request.form["ticker_symbol"]
+    _ticker = request.form["ticker"]
+    _currency = request.form["currency"]
+    _issueDate = request.form["issue_date"].split("/")[2]+"-"+request.form["issue_date"].split("/")[0]+"-"+request.form["issue_date"].split("/")[1]
+    _originalIssueDate = request.form["original_issue_date"]
+    _firstCouponDate = request.form["first_coupon_date"].split("/")[2]+"-"+request.form["first_coupon_date"].split("/")[0]+"-"+request.form["first_coupon_date"].split("/")[1]
+    _coupon = request.form["coupon"]
+    _maturityDate = request.form["maturity_date"].split("/")[2]+"-"+request.form["maturity_date"].split("/")[0]+"-"+request.form["maturity_date"].split("/")[1]
+    _auctionDate = request.form["auction_date"].split("/")[2]+"-"+request.form["auction_date"].split("/")[0]+"-"+request.form["auction_date"].split("/")[1]
+    _isin = request.form["isin"]
+    _totalIssueSize = request.form["total_issue_size"]
+
+    con = mysql.connect()
+    cursor = con.cursor()
+    cursor.execute("INSERT INTO bonds (id_user, flavor, ticker_symbol, ticker, currency, issue_date, original_issue_date, first_coupon_date, coupon, maturity_date, auction_date, isin, total_issue_size) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", (_idUser, _flavor, _tickerSymbol, _ticker, _currency, _issueDate, _originalIssueDate, _firstCouponDate, _coupon, _maturityDate, _auctionDate, _isin, _totalIssueSize))
+    con.commit()
+    flash('Bond added successfully')
+    cursor.close()
+    con.close()
+    return redirect(url_for('userHome'))
+
+
+@app.route("/editBond/<id>", methods=["POST"])
+def editBond(id):
+    _idUser = session.get("user")
+    _flavor = request.form["flavor"]
+    _tickerSymbol = request.form["ticker_symbol"]
+    _ticker = request.form["ticker"]
+    _currency = request.form["currency"]
+    _issueDate = request.form["issue_date"].split("/")[2] + "-" + request.form["issue_date"].split("/")[0] + "-" + request.form["issue_date"].split("/")[1]
+    _originalIssueDate = request.form["original_issue_date"]
+    _firstCouponDate = request.form["first_coupon_date"].split("/")[2] + "-" + request.form["first_coupon_date"].split("/")[0] + "-" + request.form["first_coupon_date"].split("/")[1]
+    _coupon = request.form["coupon"]
+    _maturityDate = request.form["maturity_date"].split("/")[2] + "-" + request.form["maturity_date"].split("/")[0] + "-" + request.form["maturity_date"].split("/")[1]
+    _auctionDate = request.form["auction_date"].split("/")[2] + "-" + request.form["auction_date"].split("/")[0] + "-" + request.form["auction_date"].split("/")[1]
+    _isin = request.form["isin"]
+    _totalIssueSize = request.form["total_issue_size"]
+
+    con = mysql.connect()
+    cursor = con.cursor()
+    cursor.execute("UPDATE bonds SET id_user=%s, flavor=%s, ticker_symbol=%s, ticker=%s, currency=%s, issue_date=%s, original_issue_date=%s, first_coupon_date=%s, coupon=%s, maturity_date=%s, auction_date=%s, isin=%s, total_issue_size=%s WHERE id_bond=%s",(_idUser, _flavor, _tickerSymbol, _ticker, _currency, _issueDate, _originalIssueDate, _firstCouponDate, _coupon,_maturityDate, _auctionDate, _isin, _totalIssueSize, id))
+    con.commit()
+    flash('Bond updated successfully')
+    cursor.close()
+    con.close()
+    return redirect(url_for('userHome'))
+
+
+@app.route("/showEditBond/<id>", methods=["POST", "GET"])
+def getBond(id):
+
+    con = mysql.connect()
+    cursor = con.cursor()
+    cursor.execute("SELECT * FROM bonds WHERE id_bond=%s", (id))
+    data = cursor.fetchall()
+    cursor.close()
+    con.close()
+    return render_template("editbond.html", bond=data[0])
+
+
 if __name__ == "__main__":        # on running python App.py
     # Schema()
     app.run(debug=True)           # run the flask app
