@@ -57,7 +57,8 @@ def signUp():
                 logging.info("Se registro usuario con el nombre: {}".format(_username))
                 conn.commit()
                 logging.debug("Se agrego usuario a la base de datos")
-                return json.dumps({"message": "Usuario creado exitosamente"})
+                print(data)
+                return redirect("/showSignIn")
             else:
                 logging.debug("Hubo un error al agregar usuario a la base de datos")
                 return json.dumps({"error": str(data[0])})
