@@ -16,19 +16,19 @@ def generateIsin(countryCode):
     '''
 
     logging.debug("Calculando ISIN")
-
+    # Tomar el codigo del pais
     isin = "" + countryCode[0] + countryCode[1]
     digits = []
-
+    # Calcular 9 numeros aleatorios
     for i in range(9):
         rnd = random.randint(0, 9)
         isin += str(rnd)
         digits.append(rnd)
-
+    # Sumar numeros
     digit = 0
     for i in range(9):
         digit += digits[i]
-
+    # Agregar el digito de la suma de los numeros
     isin += str(digit % 10)
 
     return isin
@@ -46,8 +46,8 @@ def compareDates(before, after):
     '''
 
     logging.debug("Comparando fechas")
-
+    # Convertir fechas
     x = datetime.datetime(int(before.split("-")[0]), int(before.split("-")[1]), int(before.split("-")[2]))
     y = datetime.datetime(int(after.split("-")[0]), int(after.split("-")[1]), int(after.split("-")[2]))
-
+    # Comparar fechas
     return x < y
