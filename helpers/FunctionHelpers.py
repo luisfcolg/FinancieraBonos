@@ -10,10 +10,6 @@ def generateIsin(countryCode):
     :return: Devuelve el código ISIN
     :rtype: str
     '''
-    '''
-    :param countryCode: 
-    :return: 
-    '''
     isin = "" + countryCode[0] + countryCode[1]
     digits = []
 
