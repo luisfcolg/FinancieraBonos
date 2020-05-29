@@ -42,41 +42,27 @@
                 <form action="/editBond/{{bond.0}}" method="POST">
                   <div class="form-group">
                       <label>Flavor</label>
-                      <input type="text" class="form-control" name="flavor" value="{{bond.2}}" id="flavor" required pattern="^[a-zA-Z]+$">
+                      <input type="text" class="form-control" name="flavor" id="flavor" value="{{bond.2}}" required pattern="^[a-zA-Z]+$">
                   </div>
                   <div class="form-group">
                     <label>Ticker Symbol</label>
-                    <input type="text" class="form-control" name="ticker_symbol" value="{{bond.3}}" id="tickerSymbol" required pattern="^[a-zA-Z][a-zA-Z0-9]*$">
+                    <input type="text" class="form-control" name="ticker_symbol" id="tickerSymbol" value="{{bond.3}}" required pattern="^[a-zA-Z][a-zA-Z0-9]*$">
                   </div>
                   <div class="form-group">
                     <label>Tycker</label>
-                    <input type="text" class="form-control" name="ticker" value="{{bond.4}}" id="tycker" required pattern="^[a-zA-Z]+$">
-                  </div>
-                  <div class="form-group">
-                    <label>Currency</label>
-                    <input type="text" class="form-control" name="currency" value="{{bond.5}}" id="currency" required>
+                    <input type="text" class="form-control" name="ticker" id="tycker" value="{{bond.4}}" required pattern="^[a-zA-Z]+$">
                   </div>
                   <div class="form-group">
                     <label>Issue Date</label>
-                    <input style="display: inline-block; width: 1130px;" type="datetime" value="{{bond.6}}" id="datepicker1" name="issue_date" required pattern="^(((0)[0-9])|((1)[0-2]))(\/)([0-2][0-9]|(3)[0-1])(\/)\d{4}$" >
-                    <script>
-                      $('#datepicker1').datepicker({
-                          uiLibrary: 'bootstrap4'
-                      });
-                    </script>
+                    <input type="text" class="form-control" id="datepicker1" placeholder="YYYY-MM-DD" value="{{bond.6}}" name="issue_date" required pattern="([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))" >
                   </div>
                   <div class="form-group">
                     <label>Original Issue Date</label>
-                    <input type="text" class="form-control" name="original_issue_date" value="{{bond.7}}" id="originalIssueDate" required pattern="^[0-9]*$">
+                    <input type="text" class="form-control" placeholder="AAAA/MM/DD" name="original_issue_date" id="originalIssueDate" value="{{bond.7}}" required pattern="^[0-9]*$">
                   </div>
                   <div  class="form-group">
                     <label>First Coupon Date</label>
-                    <input style="display: inline-block; width: 1130px;" type="datetime" value="{{bond.8}}" id="datepicker2" name="first_coupon_date" required pattern="^(((0)[0-9])|((1)[0-2]))(\/)([0-2][0-9]|(3)[0-1])(\/)\d{4}$" >
-                    <script>
-                      $('#datepicker2').datepicker({
-                          uiLibrary: 'bootstrap4'
-                      });
-                    </script>
+                    <input type="text" class="form-control" id="datepicker2" placeholder="YYYY-MM-DD" value="{{bond.8}}" name="first_coupon_date" required pattern="([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))" >
                   </div>
                   <div class="form-group">
                     <label>Coupon</label>
@@ -84,29 +70,15 @@
                   </div>
                   <div class="form-group">
                     <label>Matuirity Date</label>
-                    <input style="display: inline-block; width: 1130px;" type="datetime" value="{{bond.10}}" id="datepicker3" name="maturity_date" required pattern="^(((0)[0-9])|((1)[0-2]))(\/)([0-2][0-9]|(3)[0-1])(\/)\d{4}$" >
-                    <script>
-                      $('#datepicker3').datepicker({
-                          uiLibrary: 'bootstrap4'
-                      });
-                    </script>
+                    <input type="text" class="form-control" id="datepicker3" placeholder="YYYY-MM-DD" value="{{bond.10}}" name="maturity_date" required pattern="([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))" >
                   </div>
                   <div class="form-group">
                     <label>Auction Date</label>
-                    <input style="display: inline-block; width: 1130px;" type="datetime" value="{{bond.11}}" id="datepicker4" name="auction_date" required pattern="^(((0)[0-9])|((1)[0-2]))(\/)([0-2][0-9]|(3)[0-1])(\/)\d{4}$" >
-                    <script>
-                      $('#datepicker4').datepicker({
-                          uiLibrary: 'bootstrap4'
-                      });
-                    </script>
-                  </div>
-                  <div class="form-group">
-                    <label>ISIN</label>
-                    <input type="text" class="form-control" name="isin" id="isin" value="{{bond.12}}" required pattern="^[a-zA-Z][a-zA-Z0-9]*$">
+                    <input type="text" class="form-control" id="datepicker4" placeholder="YYYY-MM-DD" value="{{bond.11}}" name="auction_date" required pattern="([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))" >
                   </div>
                   <div class="form-group">
                     <label>Total Issue Size</label>
-                    <input type="text" class="form-control" name="total_issue_size" value="{{bond.13}}" id="totalIssueSize" required pattern="^[0-9]*$">
+                    <input type="text" class="form-control" name="total_issue_size" id="totalIssueSize" value="{{bond.13}}" required pattern="^[0-9]*$">
                   </div>
                   <button type="submit" class="btn btn-success">Submit</button>
                 </form>

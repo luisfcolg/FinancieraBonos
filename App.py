@@ -3,6 +3,7 @@ from flaskext.mysql import MySQL
 from werkzeug.security import generate_password_hash, check_password_hash
 import logging
 import traceback
+from helpers import FunctionHelpers
 
 logging.basicConfig(level=logging.DEBUG, filename='events.log')
 
@@ -176,18 +177,25 @@ def addBond():
         _flavor = request.form["flavor"]
         _tickerSymbol = request.form["ticker_symbol"]
         _ticker = request.form["ticker"]
-        _currency = request.form["currency"]
+        _currency = request.form["currencies"]
         _issueDate = request.form["issue_date"].split("/")[2]+"-"+request.form["issue_date"].split("/")[0]+"-"+request.form["issue_date"].split("/")[1]
         _originalIssueDate = request.form["original_issue_date"]
         _firstCouponDate = request.form["first_coupon_date"].split("/")[2]+"-"+request.form["first_coupon_date"].split("/")[0]+"-"+request.form["first_coupon_date"].split("/")[1]
         _coupon = request.form["coupon"]
         _maturityDate = request.form["maturity_date"].split("/")[2]+"-"+request.form["maturity_date"].split("/")[0]+"-"+request.form["maturity_date"].split("/")[1]
         _auctionDate = request.form["auction_date"].split("/")[2]+"-"+request.form["auction_date"].split("/")[0]+"-"+request.form["auction_date"].split("/")[1]
-        _isin = request.form["isin"]
+        _isin = FunctionHelpers.generateIsin(_currency)
         _totalIssueSize = request.form["total_issue_size"]
 
         con = mysql.connect()
         cursor = con.cursor()
+
+        originalIssueDate = _originalIssueDate[0:4]+"-"+_originalIssueDate[4:6]+"-"+_originalIssueDate[6:8]
+        if (FunctionHelpers.compareDates(_issueDate, originalIssueDate) or FunctionHelpers.compareDates(_firstCouponDate, originalIssueDate) or FunctionHelpers.compareDates(_maturityDate, originalIssueDate) or FunctionHelpers.compareDates(_auctionDate, originalIssueDate)) or (FunctionHelpers.compareDates(_maturityDate, _issueDate) or FunctionHelpers.compareDates(_maturityDate, originalIssueDate) or FunctionHelpers.compareDates(_maturityDate, _firstCouponDate) or FunctionHelpers.compareDates(_maturityDate, _auctionDate)):
+            message = "Ocurrio un error al anadir bono porque alguna fecha es menor a Original Issue Date o porque alguna fecha es mayor a Maturity Date"
+            logging.error(message)
+            return render_template('error.html', error=message)
+
         cursor.execute("INSERT INTO bonds (id_user, flavor, ticker_symbol, ticker, currency, issue_date, original_issue_date, first_coupon_date, coupon, maturity_date, auction_date, isin, total_issue_size) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", (_idUser, _flavor, _tickerSymbol, _ticker, _currency, _issueDate, _originalIssueDate, _firstCouponDate, _coupon, _maturityDate, _auctionDate, _isin, _totalIssueSize))
         con.commit()
         flash('Bono anadido exitosamente')
@@ -217,19 +225,24 @@ def editBond(id):
         _flavor = request.form["flavor"]
         _tickerSymbol = request.form["ticker_symbol"]
         _ticker = request.form["ticker"]
-        _currency = request.form["currency"]
-        _issueDate = request.form["issue_date"].split("/")[2] + "-" + request.form["issue_date"].split("/")[0] + "-" + request.form["issue_date"].split("/")[1]
+        _issueDate = request.form["issue_date"]
         _originalIssueDate = request.form["original_issue_date"]
-        _firstCouponDate = request.form["first_coupon_date"].split("/")[2] + "-" + request.form["first_coupon_date"].split("/")[0] + "-" + request.form["first_coupon_date"].split("/")[1]
+        _firstCouponDate = request.form["first_coupon_date"]
         _coupon = request.form["coupon"]
-        _maturityDate = request.form["maturity_date"].split("/")[2] + "-" + request.form["maturity_date"].split("/")[0] + "-" + request.form["maturity_date"].split("/")[1]
-        _auctionDate = request.form["auction_date"].split("/")[2] + "-" + request.form["auction_date"].split("/")[0] + "-" + request.form["auction_date"].split("/")[1]
-        _isin = request.form["isin"]
+        _maturityDate = request.form["maturity_date"]
+        _auctionDate = request.form["auction_date"]
         _totalIssueSize = request.form["total_issue_size"]
 
         con = mysql.connect()
         cursor = con.cursor()
-        cursor.execute("UPDATE bonds SET id_user=%s, flavor=%s, ticker_symbol=%s, ticker=%s, currency=%s, issue_date=%s, original_issue_date=%s, first_coupon_date=%s, coupon=%s, maturity_date=%s, auction_date=%s, isin=%s, total_issue_size=%s WHERE id_bond=%s",(_idUser, _flavor, _tickerSymbol, _ticker, _currency, _issueDate, _originalIssueDate, _firstCouponDate, _coupon,_maturityDate, _auctionDate, _isin, _totalIssueSize, id))
+
+        originalIssueDate = _originalIssueDate[0:4] + "-" + _originalIssueDate[4:6] + "-" + _originalIssueDate[6:8]
+        if (FunctionHelpers.compareDates(_issueDate, originalIssueDate) or FunctionHelpers.compareDates(_firstCouponDate, originalIssueDate) or FunctionHelpers.compareDates(_maturityDate, originalIssueDate) or FunctionHelpers.compareDates(_auctionDate, originalIssueDate)) or (FunctionHelpers.compareDates(_maturityDate, _issueDate) or FunctionHelpers.compareDates(_maturityDate, originalIssueDate) or FunctionHelpers.compareDates(_maturityDate, _firstCouponDate) or FunctionHelpers.compareDates(_maturityDate, _auctionDate)):
+            message = "Ocurrio un error al anadir bono porque alguna fecha es menor a Original Issue Date o porque alguna fecha es mayor a Maturity Date"
+            logging.error(message)
+            return render_template('error.html', error=message)
+
+        cursor.execute("UPDATE bonds SET id_user=%s, flavor=%s, ticker_symbol=%s, ticker=%s, issue_date=%s, original_issue_date=%s, first_coupon_date=%s, coupon=%s, maturity_date=%s, auction_date=%s, total_issue_size=%s WHERE id_bond=%s",(_idUser, _flavor, _tickerSymbol, _ticker, _issueDate, _originalIssueDate, _firstCouponDate, _coupon,_maturityDate, _auctionDate, _totalIssueSize, id))
         con.commit()
         flash('Bono actualizado exitosamente')
         logging.debug("Se actualizo bono correctamente")
