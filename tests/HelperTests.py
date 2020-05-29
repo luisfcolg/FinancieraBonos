@@ -10,8 +10,8 @@ class HelperTests(unittest.TestCase):
 
         result = FunctionHelpers.compareDates(before, after)
 
-        self.assertNotEqual(result, True, 'Valid credentials')
-        self.assertEqual(result, False, 'Valid credentials')
+        self.assertNotEqual(result, True, 'Comparacion correcta')
+        self.assertEqual(result, False, 'Comparacion correcta')
 
 
     def testGenerateIsin(self):
@@ -31,5 +31,5 @@ class HelperTests(unittest.TestCase):
                 validateNums = False
                 break
 
-        self.assertNotEqual(validateChar and validateNums, False, "Valid ISIN")
-        self.assertEqual(validateChar and validateNums, True, "Valid ISIN")
+        self.assertNotEqual(validateChar and validateNums, False, "ISIN valido")
+        self.assertEqual(validateChar and validateNums, True, "ISIN valido")
