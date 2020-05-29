@@ -10,7 +10,7 @@
         <!-- Latest compiled JavaScript -->
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
-        <link href="../static/signup.css" rel="stylesheet">
+        <link href="../static/SignUp.css" rel="stylesheet">
     
   </head>
  
@@ -20,9 +20,9 @@
       <div class="header">
         <nav>
           <ul class="nav nav-pills pull-right">
-            <li role="presentation" ><a href="/userHome">Home</a></li>
-            <li role="presentation" class="active"><a href="#">Sign In</a></li>
-            <li role="presentation" ><a href="/showSignUp">Sign Up</a></li>
+            <li role="presentation" ><a href="/userHome">Inicio</a></li>
+            <li role="presentation" class="active"><a href="#">Iniciar sesion</a></li>
+            <li role="presentation" ><a href="/showSignUp">Registrarse</a></li>
           </ul>
         </nav>
         <h3 class="text-muted">Bienvenido</h3>
@@ -31,12 +31,12 @@
       <div class="jumbotron">
         <h1>FinancieraBonos App</h1>
         <form class="form-signin" action="/validateLogin" method="post">
-        <label for="inputUsername" class="sr-only">Username</label>
+        <label for="inputUsername" class="sr-only">Usuario</label>
         <input type="username" name="inputUsername" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
-        <label for="inputPassword" class="sr-only">Password</label>
+        <label for="inputPassword" class="sr-only">Contrasena</label>
         <input type="password" name="inputPassword" id="inputPassword" class="form-control" placeholder="Password" required>
          
-        <button id="btnSignIn" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        <button id="btnSignIn" class="btn btn-lg btn-primary btn-block" type="submit">Iniciar sesion</button>
       </form>
       </div>
  

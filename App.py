@@ -23,12 +23,12 @@ mysql.init_app(app)
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("Index.html")
 
 
 @app.route("/showSignUp")
 def showSignUp():
-    return render_template("signup.html")
+    return render_template("SignUp.html")
 
 
 @app.route("/signUp", methods=["POST"])
@@ -78,7 +78,7 @@ def signUp():
 
 @app.route('/showSignin')
 def showSignin():
-    return render_template('signin.html')
+    return render_template('SignIn.html')
 
 
 @app.route('/validateLogin', methods=['POST'])
@@ -107,15 +107,15 @@ def validateLogin():
                 return redirect('/userHome')
             else:
                 logging.info("Usuario o contrasena incorrecta")
-                return render_template('error.html', error='Usuario o contrasena incorrecta.')
+                return render_template('Error.html', error='Usuario o contrasena incorrecta.')
         else:
             logging.info("Usuario o contrasena incorrecta")
-            return render_template('error.html', error='Usuario o contrasena incorrecta.')
+            return render_template('Error.html', error='Usuario o contrasena incorrecta.')
  
     except Exception as e:
         message = "Ocurrio un error al iniciar sesion - {}\n{}".format(e,traceback.format_exc())
         logging.error(message)
-        return render_template('error.html', error=str(e))
+        return render_template('Error.html', error=str(e))
     # Cerrar conexion a la db   
     finally:
         cursor.close()
@@ -140,15 +140,15 @@ def userHome():
 
         if session.get('user'):
             if session.get('role') == 1:
-                return render_template('userhome.html', bonds=data)
+                return render_template('UserHome.html', bonds=data)
             else:
-                return render_template('userhomeadmin.html', bonds=data)
+                return render_template('UserHomeAdmin.html', bonds=data)
         else:
-            return render_template('error.html', error='Acceso denegado')
+            return render_template('Error.html', error='Acceso denegado')
     except Exception as e:
         message = "Ocurrio un error al cargar informacion - {}\n{}".format(e,traceback.format_exc())
         logging.error(message)
-        return render_template('error.html', error=str(e))
+        return render_template('Error.html', error=str(e))
     # Cerrar conexion a la db   
     finally:
         cursor.close()
@@ -200,7 +200,7 @@ def addBond():
         if (FunctionHelpers.compareDates(_issueDate, originalIssueDate) or FunctionHelpers.compareDates(_firstCouponDate, originalIssueDate) or FunctionHelpers.compareDates(_maturityDate, originalIssueDate) or FunctionHelpers.compareDates(_auctionDate, originalIssueDate)) or (FunctionHelpers.compareDates(_maturityDate, _issueDate) or FunctionHelpers.compareDates(_maturityDate, originalIssueDate) or FunctionHelpers.compareDates(_maturityDate, _firstCouponDate) or FunctionHelpers.compareDates(_maturityDate, _auctionDate)):
             message = "Ocurrio un error al anadir bono porque alguna fecha es menor a Original Issue Date o porque alguna fecha es mayor a Maturity Date"
             logging.error(message)
-            return render_template('error.html', error=message)
+            return render_template('Error.html', error=message)
 
         cursor.execute("INSERT INTO bonds (id_user, flavor, ticker_symbol, ticker, currency, issue_date, original_issue_date, first_coupon_date, coupon, maturity_date, auction_date, isin, total_issue_size) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", (_idUser, _flavor, _tickerSymbol, _ticker, _currency, _issueDate, _originalIssueDate, _firstCouponDate, _coupon, _maturityDate, _auctionDate, _isin, _totalIssueSize))
         con.commit()
@@ -210,7 +210,7 @@ def addBond():
     except Exception as e:
         message = "Ocurrio un error al anadir bono - {}\n{}".format(e,traceback.format_exc())
         logging.error(message)
-        return render_template('error.html', error=str(e))
+        return render_template('Error.html', error=str(e))
     # Cerrar conexion a la db 
     finally:
         cursor.close()
@@ -248,7 +248,7 @@ def editBond(id):
         if (FunctionHelpers.compareDates(_issueDate, originalIssueDate) or FunctionHelpers.compareDates(_firstCouponDate, originalIssueDate) or FunctionHelpers.compareDates(_maturityDate, originalIssueDate) or FunctionHelpers.compareDates(_auctionDate, originalIssueDate)) or (FunctionHelpers.compareDates(_maturityDate, _issueDate) or FunctionHelpers.compareDates(_maturityDate, originalIssueDate) or FunctionHelpers.compareDates(_maturityDate, _firstCouponDate) or FunctionHelpers.compareDates(_maturityDate, _auctionDate)):
             message = "Ocurrio un error al anadir bono porque alguna fecha es menor a Original Issue Date o porque alguna fecha es mayor a Maturity Date"
             logging.error(message)
-            return render_template('error.html', error=message)
+            return render_template('Error.html', error=message)
 
         cursor.execute("UPDATE bonds SET id_user=%s, flavor=%s, ticker_symbol=%s, ticker=%s, issue_date=%s, original_issue_date=%s, first_coupon_date=%s, coupon=%s, maturity_date=%s, auction_date=%s, total_issue_size=%s WHERE id_bond=%s",(_idUser, _flavor, _tickerSymbol, _ticker, _issueDate, _originalIssueDate, _firstCouponDate, _coupon,_maturityDate, _auctionDate, _totalIssueSize, id))
         con.commit()
@@ -258,7 +258,7 @@ def editBond(id):
     except Exception as e:
         message = "Ocurrio un error al actualizar bono - {}\n{}".format(e,traceback.format_exc())
         logging.error(message)
-        return render_template('error.html', error=str(e))
+        return render_template('Error.html', error=str(e))
     # Cerrar conexion a la db  
     finally:
         cursor.close()
@@ -282,11 +282,11 @@ def getBond(id):
         cursor.execute("SELECT * FROM bonds WHERE id_bond=%s", (id))
         data = cursor.fetchall()
         logging.debug("Se cargo la informacion exitosamente")
-        return render_template("editbond.html", bond=data[0])
+        return render_template("EditBond.html", bond=data[0])
     except Exception as e:
         message = "Ocurrio un error al cargar informacion del bono - {}\n{}".format(e,traceback.format_exc())
         logging.error(message)
-        return render_template('error.html', error=str(e))
+        return render_template('Error.html', error=str(e))
     # Cerrar conexion a la db     
     finally:
         cursor.close()
