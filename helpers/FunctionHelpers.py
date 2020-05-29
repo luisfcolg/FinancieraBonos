@@ -1,5 +1,9 @@
 import datetime
 import random
+import logging
+
+
+logging.basicConfig(level=logging.DEBUG, filename='../events.log')
 
 
 def generateIsin(countryCode):
@@ -10,6 +14,9 @@ def generateIsin(countryCode):
     :return: Devuelve el código ISIN
     :rtype: str
     '''
+
+    logging.debug("Calculando ISIN")
+
     isin = "" + countryCode[0] + countryCode[1]
     digits = []
 
@@ -37,6 +44,9 @@ def compareDates(before, after):
     :returns: Devuelve un booleano del resultado. Será verdadero si before es menor o igual a after
     :rtype: bool
     '''
+
+    logging.debug("Comparando fechas")
+
     x = datetime.datetime(int(before.split("-")[0]), int(before.split("-")[1]), int(before.split("-")[2]))
     y = datetime.datetime(int(after.split("-")[0]), int(after.split("-")[1]), int(after.split("-")[2]))
 
