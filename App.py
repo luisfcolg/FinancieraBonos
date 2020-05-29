@@ -7,12 +7,13 @@ from helpers import FunctionHelpers
 
 logging.basicConfig(level=logging.DEBUG, filename='events.log')
 
+# Crear instancia de la app
 
-app = Flask(__name__)             # create an app instance
+app = Flask(__name__)             
 app.secret_key = '1234'
 mysql = MySQL()
 
-# MySQL configurations
+# MySQL configuraciones
 app.config["MYSQL_DATABASE_USER"] = "root"
 app.config["MYSQL_DATABASE_PASSWORD"] = "1234"
 app.config["MYSQL_DATABASE_DB"] = "financialbond"
@@ -38,20 +39,20 @@ def signUp():
     :rtype: str 
     '''
     try:
-        # Read values from the UI
+        # Leer valores de la UI
         _username = request.form["inputUsername"]
         _password = request.form["inputPassword"]
         _role = request.form["userType"]
 
         
-        # Validate the values
+        # Validar los valores
         if _username and _password and _password:
             conn = mysql.connect()
             cursor = conn.cursor()
             _hashed_password = generate_password_hash(_password)
             cursor.callproc("create_user", (_username, _hashed_password, _role))
             data = cursor.fetchall()
-
+            # Guardar informacion en la db
             if len(data) == 0:
                 logging.info("Se registro usuario con el nombre: {}".format(_username))
                 conn.commit()
@@ -68,7 +69,7 @@ def signUp():
         message = "Ocurrio un error al crear usuario - {}\n{}".format(e, traceback.format_exc())
         logging.error(message)
         return json.dumps({'error': str(e)})
-
+    # Cerrar conexion a la db
     finally:
         cursor.close()
         conn.close()
@@ -91,13 +92,13 @@ def validateLogin():
         _username = request.form['inputUsername']
         _password = request.form['inputPassword']
 
-        # connect to mysql
+        # Conectar a mysql
  
         con = mysql.connect()
         cursor = con.cursor()
         cursor.callproc("validate_user", (_username,))
         data = cursor.fetchall()
-
+        # Validar contrasena
         if len(data) > 0:
             if check_password_hash(str(data[0][3]), _password):
                 logging.info("Se inicio sesion con usuario {}".format(_username))
@@ -115,6 +116,7 @@ def validateLogin():
         message = "Ocurrio un error al iniciar sesion - {}\n{}".format(e,traceback.format_exc())
         logging.error(message)
         return render_template('error.html', error=str(e))
+    # Cerrar conexion a la db   
     finally:
         cursor.close()
         con.close()
@@ -128,6 +130,7 @@ def userHome():
     :returns: Devuelve un template html con el resultado 
     :rtype: html template
     '''
+    # Obtener bonos
     try:
         con = mysql.connect()
         cursor = con.cursor()
@@ -146,6 +149,7 @@ def userHome():
         message = "Ocurrio un error al cargar informacion - {}\n{}".format(e,traceback.format_exc())
         logging.error(message)
         return render_template('error.html', error=str(e))
+    # Cerrar conexion a la db   
     finally:
         cursor.close()
         con.close()
@@ -159,6 +163,7 @@ def logout():
     :returns: Devuelve un template html con el resultado 
     :rtype: html template
     '''
+    # Cerrar sesion
     session.pop('user', None)
     session.pop('role', None)
     logging.info("Sesion finalizada")
@@ -172,6 +177,7 @@ def addBond():
     :returns: Devuelve un template html con el resultado 
     :rtype: html template
     '''
+    # Anadir bono
     try:
         _idUser = session.get("user")
         _flavor = request.form["flavor"]
@@ -205,6 +211,7 @@ def addBond():
         message = "Ocurrio un error al anadir bono - {}\n{}".format(e,traceback.format_exc())
         logging.error(message)
         return render_template('error.html', error=str(e))
+    # Cerrar conexion a la db 
     finally:
         cursor.close()
         con.close()
@@ -220,6 +227,7 @@ def editBond(id):
     :returns: Devuelve un template html con el resultado 
     :rtype: html template
     '''
+    # Editar bono
     try:
         _idUser = session.get("user")
         _flavor = request.form["flavor"]
@@ -251,6 +259,7 @@ def editBond(id):
         message = "Ocurrio un error al actualizar bono - {}\n{}".format(e,traceback.format_exc())
         logging.error(message)
         return render_template('error.html', error=str(e))
+    # Cerrar conexion a la db  
     finally:
         cursor.close()
         con.close()
@@ -266,6 +275,7 @@ def getBond(id):
     :returns: Devuelve un template html con el resultado 
     :rtype: html template
     '''
+    # Obtener bono
     try:
         con = mysql.connect()
         cursor = con.cursor()
@@ -277,6 +287,7 @@ def getBond(id):
         message = "Ocurrio un error al cargar informacion del bono - {}\n{}".format(e,traceback.format_exc())
         logging.error(message)
         return render_template('error.html', error=str(e))
+    # Cerrar conexion a la db     
     finally:
         cursor.close()
         con.close()
